@@ -1,0 +1,10 @@
+{
+  "name": "Gestion cours CESI",
+  "version": "1.0.0",
+  "description": "Awesome bot allows to know which course you must follow during a working day",
+  "main": "bot.js",
+  "author": "Nathan - Corentin - Yannick",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
