@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 
-const Mysql = require('./Services/Mysql');
 const Bcrypt = require('./Services/Bcrypt');
 
 var DB = mysql.createConnection({
@@ -21,6 +20,7 @@ DB.connect(function(err) {
     if (err) throw err;
     console.log("✅ Connecté à la base de données");
 });
+
 app.use(session({
     secret: 'secret',
     resave: true,
@@ -28,6 +28,7 @@ app.use(session({
 }));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
+app.use('/static', express.static(__dirname + '/public'));
 
 app.get('/', function(request, response) {
     response.sendFile(path.join(__dirname + '/login.html'));
@@ -60,7 +61,7 @@ app.get('/dashboard', function(request, response) {
     if (request.session.loggedin) {
         response.send('Welcome back, ' + request.session.firstname + '!');
     } else {
-        response.send('Please login to view this page!');
+        response.sendFile(path.join(__dirname + '/not-allowed.html'));
     }
     response.end();
 });
@@ -142,6 +143,9 @@ bot.on('message', message => {
                     );
                 });
                 break;
+            case 'campusList':
+                getCampusList();
+                break;
         }
     }
 });
@@ -159,7 +163,7 @@ function getCampusList()
 }
 
 
-bot.login('NjUxMzk1NDM5Njc3MDE0MDE3.Xedi-A.AkhaoPEiwS7ldy_u3NX5NxwUH5I');
+bot.login('NjUxMzk1NDM5Njc3MDE0MDE3.Xed88A.2gr2oaVqBU5STwMt718kkgNOlC0');
 
 app.listen(3000, function () {
     console.log('📡 Application admin accessible sur le port 3000')
