@@ -105,7 +105,7 @@ bot.on('message', message => {
                     Crud.getCurrentUserInformations(message, args);
                 break;
             case 'campusList':
-                Crud.getCampusList(message, args);
+                    Crud.getCampusList(message, args);
                 break;
             case 'newPromotion':
                 let promotionName = args.join(" ");
