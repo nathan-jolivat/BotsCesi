@@ -4,13 +4,17 @@ const mysql = require('mysql');
 const path = require('path');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+const Crud = require('./Services/Crud');
 const express = require('express');
 const app = express();
 
 const Bcrypt = require('./Services/Bcrypt');
 
+const BOT_ID = 185884367128756224;
+
 var DB = mysql.createConnection({
-        host: "10.244.128.161",
+        //host: "10.244.128.161",
+        host: "localhost",
         user: "bot",
         password: "botcesi",
         database: "bot"
@@ -18,7 +22,7 @@ var DB = mysql.createConnection({
 
 DB.connect(function(err) {
     if (err) throw err;
-    console.log("✅ Connecté à la base de données");
+    console.log("🔒 Système d'authentification connecté");
 });
 
 app.use(session({
@@ -80,7 +84,7 @@ app.get('/logout', function(req, res, next) {
 });
 
 bot.on('ready', function () {
-    bot.user.setActivity('Bryan Coder', { type: 'LISTENING' });
+    bot.user.setActivity("Pisser du code", { type: 'PLAYING' });
     console.log("🤖 Bot connecté au Serveur Discord");
 });
 
@@ -92,78 +96,31 @@ bot.on('message', message => {
         args = args.splice(1);
         switch(cmd) {
             case 'lui':
-
-                let userInfosRequest = "SELECT * FROM users WHERE firstname = '" + args[0] + "';";
-
-                DB.query(userInfosRequest, function (err, result) {
-                    if (err) throw err;
-
-                    let isAdminMessage = result[0].is_admin ? "est **Administrateur**" : "n'est pas Administrateur.";
-
-                    message.reply("Voici les informations de l'utilisateur **" + args[0] +"** : " +
-                        "\n**Prénom** : " + result[0].firstname + "\n" +
-                        "**Nom** : " + result[0].lastname + "\n" +
-                        "**Âge** : " + result[0].age + " ans \n" +
-                        "L'utilisateur " + isAdminMessage
-                    );
-                });
-
+                    Crud.getUserInformationsByFirstname(message, args);
                 break;
-            case 'adduser':
-                console.log(message.guild.name);
-
-                let newUserRequest = "INSERT INTO `users`(`firstname`, `lastname`, `email`, `age`) VALUES ('" + args[0] + "', '" + args[1] + "', '" + args[2] + "' ,'" + args[3] + "');";
-
-                console.log(newUserRequest);
-                DB.query(newUserRequest, function (err, result) {
-                    if (err) throw err;
-
-                    message.reply("L'utilisateur **" + args[0] + " " + args[1] +"** a bien été ajouté 🍻");
-                });
-
+            case 'newUser':
+                    Crud.addUser(message, args);
                 break;
             case 'moi':
-                var names = message.member.nickname.substring(0).split(" ");
-                var firstname = names[0];
-
-                console.log(firstname);
-
-                let currentUserInfos = "SELECT * FROM users WHERE firstname = '" + firstname + "';";
-
-                DB.query(currentUserInfos, function (err, result) {
-                    if (err) throw err;
-
-                    let isAdminMessage = result[0].is_admin ? "est **Administrateur**" : "n'es pas Administrateur.";
-
-                    message.reply("Voici tes informations : " +
-                        "\n**Prénom** : " + result[0].firstname + "\n" +
-                        "**Nom** : " + result[0].lastname + "\n" +
-                        "**Âge** : " + result[0].age + " ans \n" +
-                        "Tu " + isAdminMessage
-                    );
-                });
+                    Crud.getCurrentUserInformations(message, args);
                 break;
             case 'campusList':
-                getCampusList();
+                Crud.getCampusList(message, args);
+                break;
+            case 'newPromotion':
+                let promotionName = args.join(" ");
+
+                console.log(promotionName);
+                message.reply("Ok, on a bien reçu le nom de promotion que tu veux");
+
+
+                //addNewPromotion(message, args);
                 break;
         }
     }
 });
 
-function getCampusList()
-{
-    let campusListRequest = "SELECT * FROM campus;";
-
-    let DBResult = DB.query(campusListRequest, function (err, result) {
-        if (err) throw err;
-
-        return result[0];
-    });
-    return DBResult;
-}
-
-
-bot.login('NjUxMzk1NDM5Njc3MDE0MDE3.Xed88A.2gr2oaVqBU5STwMt718kkgNOlC0');
+bot.login('NjUxMzk1NDM5Njc3MDE0MDE3.XeeJjA.7XsrQe6omY-M2gCMoM0pnRq0VL8');
 
 app.listen(3000, function () {
     console.log('📡 Application admin accessible sur le port 3000')
