@@ -3,7 +3,57 @@ const bot = new Discord.Client();
 const mysql = require('mysql');
 const path = require('path');
 const Crud = require('./Services/Crud');
+const express = require('express');
+const app = express();
+var bodyParser = require('body-parser');
+
+
 const token = require('./token');
+
+var DB = mysql.createConnection({
+    host: "localhost",
+    user: "bot",
+    password: "botcesi",
+    database: "bot"
+});
+
+DB.connect(function(err) {
+    if (err) throw err;
+});
+
+app.use('/public', express.static('public'));
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
+app.get('/ajouter-cours', function(req, res) {
+    res.sendFile(path.join(__dirname, './', 'add-lesson.html'));
+});
+
+app.get('/attacher-cours', function(req, res) {
+    res.sendFile(path.join(__dirname, './', 'attach-lesson-to-user.html'));
+});
+
+app.post('/ajouter-cours/insertion', function(req, res) {
+
+    let addNewLessonQuery = "INSERT INTO `cours`(`title`, `start_at`, `end_at`, `user_id`, `teacher`) VALUES ('" + req.body.title + "', '" + req.body.start_at + "', '" + req.body.end_at + "' ,'" + req.body.user_id + "', '" + req.body.teacher + "');";
+
+    DB.query(addNewLessonQuery, function(err, result) {
+        if (err) throw err;
+
+        res.send(true);
+    });
+});
+
+app.post('/liste-eleves', function(req, res) {
+    let allStudentsQuery = "SELECT * FROM users;";
+
+    DB.query(allStudentsQuery, function(err, result) {
+        if (err) throw err;
+
+        res.json(result);
+    });
+});
+
 
 bot.on('ready', function () {
     bot.user.setActivity("Pisser du code", { type: 'PLAYING' });
@@ -37,3 +87,7 @@ bot.on('message', message => {
 });
 
 bot.login(token.token);
+
+app.listen(3000, function () {
+    console.log('📡 Application accessible sur le port 3000')
+});

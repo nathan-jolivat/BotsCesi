@@ -31,8 +31,8 @@ exports.getCampusList = function(message) {
 };
 
 exports.getCurrentUserInformations = function(message, args) {
-    var names = message.member.nickname.substring(0).split(" ");
-    var firstname = names[0];
+    let names = message.member.nickname.substring(0).split(" ");
+    let firstname = names[0];
 
     let currentUserInfos = "SELECT * FROM users WHERE firstname = '" + firstname + "';";
 
@@ -77,12 +77,48 @@ exports.getUserInformationsByFirstname = function(message, args) {
     });
 };
 
-exports.addNewPromotion = function(message, args) {
-    let newPromotionToAdd = "INSERT INTO `promotions`(`title`, `start_year`,`end_year`) VALUES ('" + args[0] + "', '" + args[1] + "', '" + args[2] + "');";
+exports.getMyLessons = function(message, args) {
+    let names = message.member.nickname.substring(0).split(" ");
+    let firstname = names[0];
 
-    let DBResult = DB.query(newPromotionToAdd, function (err, result) {
+    let getUserIdFromFirstnameQuery = "SELECT id FROM users WHERE firstname = '" + firstname + "';";
+
+
+    DB.query(getUserIdFromFirstnameQuery, function (err, parentResult) {
         if (err) throw err;
 
-        message.reply("La promotion **" + args[0] + "** a bien été ajoutée :metal:");
+        let getLessonsRequest = "SELECT * FROM cours WHERE user_id ='" + parentResult[0].id +"'";
+
+        DB.query(getLessonsRequest, function (err, result) {
+            if (err) throw err;
+
+            result.forEach(function(cours) {
+                let dateOptions = { timeZone: "Europe/Paris",
+                    hour12: false,
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric'
+                };
+                message.reply("Le cours de la journée que tu as à suivre est : **" + cours.title + "**. \n\n" +
+                    "Voici les informations complémentaires : \n\n" +
+                    ":mortar_board: Intitulé du cours : " + cours.title + "\n" +
+                    ":date: Date de début : " + cours.start_at.toLocaleDateString('fr-fr', dateOptions) + "\n" +
+                    ":date: Date de fin : " + cours.end_at.toLocaleDateString('fr-fr', dateOptions) + "\n" +
+                    ":man_teacher: Intervenant / Professeur : " + cours.teacher);
+            });
+        });
+    });
+};
+
+exports.getUsersList = function() {
+    let allStudentsQuery = "SELECT firstname, lastname, email FROM users;";
+
+    DB.query(allStudentsQuery, function(err, result) {
+       if (err) throw err;
+
+       return result;
     });
 };
