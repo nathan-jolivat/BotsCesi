@@ -2,8 +2,8 @@ var mysql = require('mysql');
 
 var DB = mysql.createConnection({
     host: "localhost",
-    user: "bot",
-    password: "botcesi",
+    user: "root",
+    password: "",
     database: "bot"
 });
 
@@ -83,5 +83,44 @@ exports.addNewPromotion = function(message, args) {
         if (err) throw err;
 
         message.reply("La promotion **" + args[0] + "** a bien été ajoutée :metal:");
+    });
+};
+
+exports.getAllCours = function(message) {
+    let campusListRequest = "SELECT * FROM cours;";
+
+    let DBResult = DB.query(campusListRequest, function (err, result) {
+        if (err) throw err;
+
+        result.forEach(function(cours) {
+
+            message.reply("cour: **" + cours.title + "** \n");
+        })
+    });
+};
+
+exports.getMyCour = function(message) {
+    let campusListRequest = "SELECT * FROM cours INNER JOIN users ON cours.user_id = users.id WHERE users.firstname = '"+ args[0] +"'";
+
+    let DBResult = DB.query(campusListRequest, function (err, result) {
+        if (err) throw err;
+
+        result.forEach(function(cours) {
+
+            message.reply("cour: **" + cours.title + "** \n");
+        })
+    });
+};
+
+exports.getMyCourtoday = function(message) {
+    let campusListRequest = "SELECT * FROM cours INNER JOIN users ON cours.user_id = users.id WHERE users.firstname = '"+ args[0] +"' AND CURRENT DATE	BETWEEN cours.start_at AND end_at  ";
+
+    let DBResult = DB.query(campusListRequest, function (err, result) {
+        if (err) throw err;
+
+        result.forEach(function(cours) {
+
+            message.reply("cour: **" + cours.title + "** \n");
+        })
     });
 };
