@@ -120,7 +120,7 @@ bot.on('message', message => {
     }
 });
 
-bot.login('NjUxMzk1NDM5Njc3MDE0MDE3.XeeJjA.7XsrQe6omY-M2gCMoM0pnRq0VL8');
+bot.login('NjUxMzk1NDM5Njc3MDE0MDE3.XeknDA.kKMzK45XidiCrn4I2paZZuGHRLc');
 
 app.listen(3000, function () {
     console.log('📡 Application admin accessible sur le port 3000')
