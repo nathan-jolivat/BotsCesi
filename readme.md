@@ -7,9 +7,9 @@ Il utilise les paquets NPM de dépendances suivants :
  
 - discord.js
 - express
+- mysql
 - body-parser 
 - path
-- express
 
 ## Installation
 
