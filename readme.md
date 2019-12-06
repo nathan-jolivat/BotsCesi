@@ -61,13 +61,15 @@ Vous êtes censés avoir la structure de base de données suivante après import
 
 **Placez-vous** dans votre répertoire projet à la racine, puis **lancez** la commande `node bot.js` dans votre terminal.
 
-🚀 Votre application fonctionne maintenant correctement, et est également accessible sur le port `3000`
+🚀 Votre application fonctionne maintenant correctement, et est accessible sur le port `3000`
 
 
 ## Pages d'interaction
 
 Ajouter un nouveau cours : 
+
 👉 http://localhost:3000/ajouter-cours
 
 Attacher un cours à un utilisateur :
+
 👉 http://localhost:3000/ajouter-cours
