@@ -3,6 +3,7 @@ const bot = new Discord.Client();
 const mysql = require('mysql');
 const path = require('path');
 const Crud = require('./Services/Crud');
+<<<<<<< HEAD
 
 const BOT_ID = 185884367128756224;
 
@@ -18,6 +19,9 @@ DB.connect(function(err) {
     if (err) throw err;
     console.log("🔒 Système d'authentification connecté");
 });
+=======
+const token = require('./token');
+>>>>>>> fd8af79ab6a84904235978f5dc41582c93f1d18c
 
 bot.on('ready', function () {
     bot.user.setActivity("Pisser du code", { type: 'PLAYING' });
@@ -43,11 +47,16 @@ bot.on('message', message => {
             case 'campusList':
                     Crud.getCampusList(message, args);
                 break;
+<<<<<<< HEAD
             case 'newPromotion':
                 let promotionName = args.join(" ");
                 console.log(promotionName);
                 message.reply("Ok, on a bien reçu le nom de promotion que tu veux");
                 //addNewPromotion(message, args);
+=======
+            case 'mesCours':
+                    Crud.getMyLessons(message, args);
+>>>>>>> fd8af79ab6a84904235978f5dc41582c93f1d18c
                 break;
             case 'allCour':
                     Crud.getAllCour(message, args);
@@ -63,4 +72,8 @@ bot.on('message', message => {
     }
 });
 
+<<<<<<< HEAD
 bot.login('NjUxMzk1NDM5Njc3MDE0MDE3.XeofAw.JJDj_jRdsGHMj9EFnukjN5vVKQ4');
+=======
+bot.login(token.token);
+>>>>>>> fd8af79ab6a84904235978f5dc41582c93f1d18c
