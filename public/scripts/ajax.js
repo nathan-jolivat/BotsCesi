@@ -113,29 +113,6 @@ $.ajax('/liste-eleves', {
     }
 });
 
-
-
-//Get all users informations
-$.ajax('/liste-eleves', {
-    type: 'POST',  // http method
-    data: {},  // data to submit
-    success: function (data, status, xhr) {
-        data.forEach(function (user) {
-
-            let option = document.createElement('option');
-
-
-            option.innerHTML = user.firstname + " " + user.lastname + " - " + user.email;
-            option.value = user.id;
-
-            inputLinkedStudentName.appendChild(option);
-        });
-    },
-    error: function (jqXhr, textStatus, errorMessage) {
-        console.error('Get All Users Informations from database : Request failed');
-    }
-});
-
 if (document.contains(inputAttachLessonId))
 {
     //Get all lessons
