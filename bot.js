@@ -44,10 +44,38 @@ app.post('/ajouter-cours/insertion', function(req, res) {
     });
 });
 
+app.post('/attacher-cours/insertion', function(req, res) {
+    let RemoveAllOlderAttachedUserLessons = "UPDATE `cours` SET `user_id` = NULL WHERE `user_id` = " + req.body.user_id + ";";
+
+    DB.query(RemoveAllOlderAttachedUserLessons, function(err, parentResult) {
+        if (err) throw err;
+
+        let AttachUserToLessonQuery = "UPDATE `cours` SET `user_id` = " + req.body.user_id + " WHERE `id` = " + req.body.cours_id + ";";
+
+        DB.query(AttachUserToLessonQuery, function(err, result) {
+            if (err) throw err;
+        });
+
+        res.send(true);
+    });
+
+
+});
+
 app.post('/liste-eleves', function(req, res) {
     let allStudentsQuery = "SELECT * FROM users;";
 
     DB.query(allStudentsQuery, function(err, result) {
+        if (err) throw err;
+
+        res.json(result);
+    });
+});
+
+app.post('/liste-cours', function(req, res) {
+    let allLessonsQuery = "SELECT * FROM cours;";
+
+    DB.query(allLessonsQuery, function(err, result) {
         if (err) throw err;
 
         res.json(result);
