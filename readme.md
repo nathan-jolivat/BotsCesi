@@ -6,7 +6,7 @@ lequel se trouve l'élève.
 Il utilise les paquets NPM de dépendances suivants :
  
 - discord.js
- express
+- express
 - body-parser 
 - path
 - express
