@@ -1,4 +1,15 @@
-# Installation de l'application
+# Bot Discord basé sur Node.js et Express
+Ce bot Discord va permettre d'interagir avec une base de données, pour récupérer des informations relatives 
+à des `élèves` et à des `cours` en fonction du `campus` dans 
+lequel se trouve l'élève.
+
+Il utilise les paquets NPM de dépendances suivants :
+ 
+- discord.js
+ express
+- body-parser 
+- path
+- express
 
 ## Installation
 
