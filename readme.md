@@ -52,3 +52,11 @@ Vous êtes censés avoir la structure de base de données suivante après import
 
 🚀 Votre application fonctionne maintenant correctement, et est également accessible sur le port `3000`
 
+
+## Pages d'interaction
+
+Ajouter un nouveau cours : 
+👉 http://localhost:3000/ajouter-cours
+
+Attacher un cours à un utilisateur :
+👉 http://localhost:3000/ajouter-cours
