@@ -2,10 +2,10 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const mysql = require('mysql');
 const path = require('path');
-const Crud = require('./Services/Crud');
+const Functions = require('./Services/Functions');
+var bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
-var bodyParser = require('body-parser');
 
 
 const token = require('./token');
@@ -45,7 +45,7 @@ app.post('/ajouter-cours/insertion', function(req, res) {
 });
 
 app.post('/attacher-cours/insertion', function(req, res) {
-    let RemoveAllOlderAttachedUserLessons = "UPDATE `cours` SET `user_id` = NULL WHERE `user_id` = " + req.body.user_id + ";";
+    let RemoveAllOlderAttachedUserLessons = "UPDATE `cours` SET `user_id` = 0 WHERE `user_id` = " + req.body.user_id + ";";
 
     DB.query(RemoveAllOlderAttachedUserLessons, function(err, parentResult) {
         if (err) throw err;
@@ -96,19 +96,19 @@ bot.on('message', message => {
         args = args.splice(1);
         switch(cmd) {
             case 'lui':
-                    Crud.getUserInformationsByFirstname(message, args);
+                    Functions.getUserInformationsByFirstname(message, args);
                 break;
             case 'newUser':
-                    Crud.addUser(message, args);
+                    Functions.addUser(message, args);
                 break;
             case 'moi':
-                    Crud.getCurrentUserInformations(message, args);
+                    Functions.getCurrentUserInformations(message, args);
                 break;
             case 'campusList':
-                    Crud.getCampusList(message, args);
+                    Functions.getCampusList(message, args);
                 break;
             case 'mesCours':
-                    Crud.getMyLessons(message, args);
+                    Functions.getMyLessons(message, args);
                 break;
         }
     }

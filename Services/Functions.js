@@ -92,23 +92,27 @@ exports.getMyLessons = function(message, args) {
         DB.query(getLessonsRequest, function (err, result) {
             if (err) throw err;
 
-            result.forEach(function(cours) {
-                let dateOptions = { timeZone: "Europe/Paris",
-                    hour12: false,
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric'
-                };
-                message.reply("Le cours de la journée que tu as à suivre est : **" + cours.title + "**. \n\n" +
-                    "Voici les informations complémentaires : \n\n" +
-                    ":mortar_board: Intitulé du cours : " + cours.title + "\n" +
-                    ":date: Date de début : " + cours.start_at.toLocaleDateString('fr-fr', dateOptions) + "\n" +
-                    ":date: Date de fin : " + cours.end_at.toLocaleDateString('fr-fr', dateOptions) + "\n" +
-                    ":man_teacher: Intervenant / Professeur : " + cours.teacher);
-            });
+            if (result.length > 0) {
+                result.forEach(function(cours) {
+                    let dateOptions = { timeZone: "Europe/Paris",
+                        hour12: false,
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric'
+                    };
+                    message.reply("Le cours de la journée que tu as à suivre est : **" + cours.title + "**. \n\n" +
+                        "Voici les informations complémentaires : \n\n" +
+                        ":mortar_board: Intitulé du cours : " + cours.title + "\n" +
+                        ":date: Date de début : " + cours.start_at.toLocaleDateString('fr-fr', dateOptions) + "\n" +
+                        ":date: Date de fin : " + cours.end_at.toLocaleDateString('fr-fr', dateOptions) + "\n" +
+                        ":man_teacher: Intervenant / Professeur : " + cours.teacher);
+                });
+            } else {
+                message.reply("Tu n'a pas de cours en vue, profite bien de ton repos :zzz:");
+            }
         });
     });
 };
