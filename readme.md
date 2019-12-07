@@ -72,4 +72,4 @@ Ajouter un nouveau cours :
 
 Attacher un cours à un utilisateur :
 
-👉 http://localhost:3000/ajouter-cours
+👉 http://localhost:3000/attacher-cours
